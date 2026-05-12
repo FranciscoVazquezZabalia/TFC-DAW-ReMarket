@@ -1,0 +1,49 @@
+.login-wrapper {
+  min-height: 100vh;
+  background-color: #fbfbfd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.input-apple {
+  background-color: #f5f5f7;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.input-apple:focus {
+  background-color: #ffffff;
+  border-color: #86868b;
+  box-shadow: 0 0 0 4px rgba(134, 134, 139, 0.1);
+  outline: none;
+}
+
+.btn-apple-dark {
+  background-color: #1d1d1f;
+  color: white;
+  border-radius: 12px;
+  padding: 16px;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.btn-apple-dark:hover { 
+  opacity: 0.8; 
+}

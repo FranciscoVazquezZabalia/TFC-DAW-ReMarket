@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand navbar-light nav-apple sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-5 tracking-tight text-dark" routerLink="/">REMARKET</a>
+    <div class="ms-auto d-flex align-items-center gap-4">
+      <a routerLink="/login" class="nav-link-auth">Acceder</a>
+      <a routerLink="/register" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Registrarse</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="py-5 mt-4 mb-5">
+    <div class="container text-center pt-5 pb-3">
+      <h1 class="hero-title">Vende lo tuyo.<br><span class="opacity-20">Compra lo suyo.</span></h1>
+    </div>
+  </section>
+
+  <section class="container px-4 pb-5">
+    <div class="row g-4">
+      <div class="col-12" *ngFor="let section of showcaseSections">
+        <div class="showcase-block shadow-sm" [ngStyle]="{'background-image': 'url(' + section.img + ')'}">
+          <div class="showcase-content {{section.textColor}}">
+            <h2 class="showcase-title">{{section.title}}</h2>
+            <p class="fs-4">{{section.subtitle}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="py-5 text-center my-5">
+    <h2 class="display-5 fw-bold mb-4">¿Listo para entrar?</h2>
+    <button routerLink="/register" class="btn btn-dark rounded-pill px-5 py-3 fs-5 fw-medium">Crear cuenta gratis</button>
+  </section>
+</main>

@@ -1,0 +1,63 @@
+:root {
+  --apple-bg: #fbfbfd;
+  --apple-dark: #1d1d1f;
+}
+
+/* Head más notable */
+.nav-apple {
+  background-color: rgba(251, 251, 253, 0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-link-auth {
+  color: var(--apple-dark);
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Titular colosal */
+.hero-title {
+  font-size: clamp(80px, 11vw, 160px); 
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.showcase-block {
+  height: 80vh; 
+  border-radius: 32px; 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 60px;
+  transition: transform 0.5s ease;
+}
+
+.showcase-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%);
+  z-index: 1;
+}
+
+.showcase-content {
+  z-index: 2;
+  text-align: center;
+}
+
+.showcase-title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
