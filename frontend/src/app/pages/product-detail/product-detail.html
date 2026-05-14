@@ -1,0 +1,46 @@
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Columna Imagen -->
+    <div class="col-md-7">
+      <div class="rounded-4 overflow-hidden shadow-sm">
+        <img [src]="product.img" class="img-fluid w-100" alt="Producto">
+      </div>
+    </div>
+
+    <!-- Columna Información -->
+    <div class="col-md-5">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small text-uppercase fw-medium">
+          <li class="breadcrumb-item"><a routerLink="/catalog" class="text-decoration-none text-secondary">Catálogo</a></li>
+          <li class="breadcrumb-item active text-dark" aria-current="page">{{product.category}}</li>
+        </ol>
+      </nav>
+
+      <h1 class="fw-bold mb-2">{{product.title}}</h1>
+      <h2 class="text-primary fw-bold mb-4">{{product.price}}€</h2>
+      
+      <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3">
+        <div class="rounded-circle bg-white d-flex align-items-center justify-content-center border" style="width: 50px; height: 50px;">
+           <span class="text-secondary small">PFP</span>
+        </div>
+        <div>
+          <p class="mb-0 small text-secondary">Vendedor</p>
+          <p class="mb-0 fw-bold">{{product.seller}}</p>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h5 class="fw-bold small text-uppercase text-secondary mb-3">Descripción</h5>
+        <p class="text-dark">{{product.description}}</p>
+      </div>
+
+      <div class="mb-5">
+        <p class="small text-secondary mb-1">Estado: <span class="text-dark fw-medium">{{product.state}}</span></p>
+        <p class="small text-secondary">Publicado el: <span class="text-dark fw-medium">{{product.date}}</span></p>
+      </div>
+
+      <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3">Comprar ahora</button>
+      
+    </div>
+  </div>
+</div>
