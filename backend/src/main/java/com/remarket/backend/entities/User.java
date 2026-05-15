@@ -1,14 +1,11 @@
 package com.remarket.backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,12 +13,28 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
-    private LocalDateTime registrationDate;
+
+    @Column(nullable = false)
+    private String role = "ROLE_USER";
+
     private String avatarUrl;
+
+    @Column(nullable = false)
+    private LocalDateTime registrationDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Product> products;
 }
