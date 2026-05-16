@@ -5,6 +5,7 @@ import { Register } from './pages/register/register';
 import { Catalog } from './pages/catalog/catalog';
 import { ProductDetail } from './pages/product-detail/product-detail';
 import { Profile } from './pages/profile/profile';
+import { CrearProducto } from './pages/crear-producto/crear-producto';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -16,7 +17,7 @@ export const routes: Routes = [
 
   // Rutas privadas: el authGuard redirige a /login si el usuario no está autenticado
   { path: 'profile', component: Profile, canActivate: [authGuard] },
-  // { path: 'crear-producto', component: CrearProducto, canActivate: [authGuard] }, // añadir cuando exista el componente
+  { path: 'crear-producto', component: CrearProducto, canActivate: [authGuard] },
 
   { path: '**', redirectTo: '' }
 ];

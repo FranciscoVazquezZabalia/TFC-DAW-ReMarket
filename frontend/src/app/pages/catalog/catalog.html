@@ -1,16 +1,19 @@
-<!-- Header con Perfil -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold tracking-tight" routerLink="/">RE<span class="opacity-50">MARKET</span></a>
-    
-    <div class="ms-auto d-flex align-items-center">
-      <a routerLink="/profile" class="text-decoration-none d-flex align-items-center gap-2">
-        <span class="text-dark small fw-medium d-none d-sm-block">Mi Perfil</span>
-        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border: 1px solid #eee;">
-          <i class="bi bi-person text-secondary"></i> 
-          <span class="text-secondary" style="font-size: 10px;">PFP</span>
-        </div>
-      </a>
+
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <!-- Mostramos opciones diferentes según si el usuario está autenticado -->
+      @if (!authService.isLoggedIn()) {
+        <a routerLink="/login" class="text-dark text-decoration-none small">Acceder</a>
+        <a routerLink="/register" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Registrarse</a>
+      } @else {
+        <span class="text-dark small">Hola, {{ authService.getNombre() }}</span>
+        <a routerLink="/crear-producto" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Publicar</a>
+        <a routerLink="/profile" class="text-dark text-decoration-none small fw-medium">Mi perfil</a>
+        <button class="btn btn-sm btn-outline-dark rounded-pill px-3" style="font-size: 13px;" (click)="logout()">Salir</button>
+      }
     </div>
   </div>
 </nav>
@@ -18,13 +21,16 @@
 <!-- Carrusel de productos destacados -->
 <div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
   <div class="carousel-inner rounded-4 mt-4 container">
-    <div class="carousel-item active" *ngFor="let img of featuredImages; let i = index" [class.active]="i === 0">
-      <img [src]="img" class="d-block w-100" style="height: 400px; object-fit: cover; border-radius: 20px;">
-      <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
-        <h2 class="display-5 fw-bold text-white shadow-sm">Novedades de la semana</h2>
-        <p class="fs-5">Descubre los productos más buscados.</p>
+    <!-- $first es una variable especial de @for que vale true solo en el primer elemento -->
+    @for (img of featuredImages; track img; let isFirst = $first) {
+      <div class="carousel-item" [class.active]="isFirst">
+        <img [src]="img" class="d-block w-100" style="height: 400px; object-fit: cover; border-radius: 20px;">
+        <div class="carousel-caption d-none d-md-block text-start" style="left: 10%; bottom: 20%;">
+          <h2 class="display-5 fw-bold text-white shadow-sm">Novedades de la semana</h2>
+          <p class="fs-5">Descubre los productos más buscados.</p>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>
 
@@ -42,20 +48,40 @@
     </div>
   </div>
 
-  <div class="row g-4">
-    <div class="col-6 col-md-4 col-lg-3" *ngFor="let p of products">
-      <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 product-card">
-        <img [src]="p.img" class="card-img-top" style="height: 200px; object-fit: cover;">
-        <div class="card-body p-3">
-          <span class="text-uppercase text-secondary" style="font-size: 10px; letter-spacing: 1px;">{{p.category}}</span>
-          <h6 class="card-title fw-bold text-truncate mb-1">{{p.title}}</h6>
-          <p class="text-muted small mb-2">{{p.state}}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="fw-bold fs-5">{{p.price}}€</span>
-            <button class="btn btn-sm btn-outline-dark rounded-pill" [routerLink]="['/product', p.id_producto]">ver</button>
-          </div>
-        </div>
+  <!-- Spinner mientras se cargan los productos -->
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
-  </div>
+  }
+
+  <!-- Mensaje de error si la llamada al backend falla -->
+  @if (error) {
+    <div class="alert alert-danger">Error al cargar los productos.</div>
+  }
+
+  <!-- Grid de productos: solo se muestra cuando ya tenemos los datos -->
+  @if (!cargando && !error) {
+    <div class="row g-4">
+      @for (p of productos; track p.id) {
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 product-card">
+            <!-- Placeholder porque los productos del backend no tienen imagen -->
+            <img src="https://placehold.co/400x300?text=Sin+imagen" class="card-img-top" style="height: 200px; object-fit: cover;">
+            <div class="card-body p-3">
+              <span class="text-uppercase text-secondary" style="font-size: 10px; letter-spacing: 1px;">{{ p.categoria }}</span>
+              <h6 class="card-title fw-bold text-truncate mb-1">{{ p.titulo }}</h6>
+              <p class="text-muted small mb-2">{{ p.estado }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold fs-5">{{ p.precio }}€</span>
+                <button class="btn btn-sm btn-outline-dark rounded-pill" [routerLink]="['/product', p.id]">ver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

@@ -1,15 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
-interface Producto {
-  id_producto: number; 
-  title: string;
-  price: number;
-  category: string;
-  state: string;
-  img: string;
-}
+import { RouterLink, Router } from '@angular/router';
+import { ProductoService } from '../../services/producto.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-catalog',
@@ -18,18 +11,45 @@ interface Producto {
   templateUrl: './catalog.html',
   styleUrl: './catalog.css',
 })
-export class Catalog {
+export class Catalog implements OnInit {
 
-  // Imágenes del carrusel
+  // Servicios inyectados. Sin 'private' para que el template pueda acceder a authService
+  productoService = inject(ProductoService);
+  authService = inject(AuthService);
+  router = inject(Router);
+
+  // Imágenes del carrusel (se mantienen igual)
   featuredImages = [
     'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80'
   ];
 
-  // Datos de prueba 
-  products : Producto[] = [
-    { id_producto: 1, title: 'iPhone 17 Pro', price: 950, category: 'Tecnología', state: 'Como nuevo', img: 'https://www.apple.com/v/iphone-17-pro/d/images/overview/welcome/hero__bdntboqignj6_xlarge.jpg '},
-    { id_producto: 2, title: 'MacBook Air M2', price: 1100, category: 'Tecnología', state: 'Excelente', img: 'https://www.apple.com/newsroom/images/product/mac/standard/Apple-WWDC22-MacBook-Air-hero-220606_big.jpg.large.jpg' },
-    { id_producto: 3, title: 'Sudadera Vintage', price: 30, category: 'Moda', state: 'Buen estado', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn_RwUVxSoaU62KPfZEBftbQDuY1hWFeRbcQ&s' }
-  ];
+  // Lista de productos que llegan del backend
+  productos: any[] = [];
+
+  // Estado de carga: true mientras esperamos la respuesta del backend
+  cargando = true;
+
+  // Estado de error: se pone en true si la llamada al backend falla
+  error = false;
+
+  // ngOnInit se ejecuta automáticamente cuando el componente se inicializa
+  ngOnInit() {
+    this.productoService.getProductos().subscribe({
+      next: (data) => {
+        this.productos = data;
+        this.cargando = false;
+      },
+      error: () => {
+        this.error = true;
+        this.cargando = false;
+      }
+    });
+  }
+
+  // Cierra la sesión del usuario y redirige al inicio
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
 }

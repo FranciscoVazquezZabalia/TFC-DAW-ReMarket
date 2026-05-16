@@ -2,8 +2,17 @@
   <div class="container">
     <a class="navbar-brand fw-bold fs-5 tracking-tight text-dark" routerLink="/">REMARKET</a>
     <div class="ms-auto d-flex align-items-center gap-4">
-      <a routerLink="/login" class="nav-link-auth">Acceder</a>
-      <a routerLink="/register" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Registrarse</a>
+      <!-- Si el usuario NO está autenticado, mostramos Acceder y Registrarse -->
+      @if (!authService.isLoggedIn()) {
+        <a routerLink="/login" class="nav-link-auth">Acceder</a>
+        <a routerLink="/register" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Registrarse</a>
+      } @else {
+        <!-- Si está autenticado, mostramos su nombre, accesos privados y botón de salir -->
+        <span class="text-dark small">Hola, {{ authService.getNombre() }}</span>
+        <a routerLink="/crear-producto" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Publicar</a>
+        <a routerLink="/profile" class="nav-link-auth">Mi perfil</a>
+        <button class="btn btn-sm btn-outline-dark rounded-pill px-3 py-2" style="font-size: 13px;" (click)="logout()">Salir</button>
+      }
     </div>
   </div>
 </nav>
@@ -17,17 +26,20 @@
 
   <section class="container px-4 pb-5">
     <div class="row g-4">
-      <div class="col-12" *ngFor="let section of showcaseSections">
-        <div class="showcase-block shadow-sm" [ngStyle]="{'background-image': 'url(' + section.img + ')'}">
-          <div class="showcase-content {{section.textColor}}">
-            <h2 class="showcase-title">{{section.title}}</h2>
-            <p class="fs-4">{{section.subtitle}}</p>
+      <!-- @for sustituye a *ngFor. 'track' es obligatorio en Angular 17+ para identificar elementos -->
+      @for (section of showcaseSections; track section.title) {
+        <div class="col-12">
+          <div class="showcase-block shadow-sm" [ngStyle]="{'background-image': 'url(' + section.img + ')'}">
+            <div class="showcase-content {{section.textColor}}">
+              <h2 class="showcase-title">{{section.title}}</h2>
+              <p class="fs-4">{{section.subtitle}}</p>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </section>
-  
+
   <section class="py-5 text-center my-5">
     <h2 class="display-5 fw-bold mb-4">¿Listo para entrar?</h2>
     <button routerLink="/register" class="btn btn-dark rounded-pill px-5 py-3 fs-5 fw-medium">Crear cuenta gratis</button>

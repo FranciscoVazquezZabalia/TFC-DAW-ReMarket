@@ -1,0 +1,74 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+
+        <h2 class="fw-bold mb-1">Publicar producto</h2>
+        <p class="text-secondary small mb-4">Rellena los detalles del artículo que quieres vender.</p>
+
+        <!-- Mensaje de error si el backend rechaza la petición -->
+        @if (errorMsg) {
+          <div class="alert alert-danger small py-2 mb-3">{{ errorMsg }}</div>
+        }
+
+        <!-- ngSubmit llama a onSubmit() al enviar el formulario -->
+        <form (ngSubmit)="onSubmit()">
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Título</label>
+            <input type="text" class="form-control rounded-3" placeholder="Ej: iPhone 14 Pro"
+                   [(ngModel)]="producto.titulo" name="titulo" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Descripción</label>
+            <textarea class="form-control rounded-3" rows="3" placeholder="Describe el artículo..."
+                      [(ngModel)]="producto.descripcion" name="descripcion" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Precio (€)</label>
+            <input type="number" class="form-control rounded-3" placeholder="0"
+                   [(ngModel)]="producto.precio" name="precio" required min="0">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Estado</label>
+            <select class="form-select rounded-3" [(ngModel)]="producto.estado" name="estado" required>
+              <option value="" disabled>Selecciona un estado</option>
+              <option value="Nuevo">Nuevo</option>
+              <option value="Como nuevo">Como nuevo</option>
+              <option value="Buen estado">Buen estado</option>
+              <option value="Aceptable">Aceptable</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-medium small">Categoría</label>
+            <select class="form-select rounded-3" [(ngModel)]="producto.categoria" name="categoria" required>
+              <option value="" disabled>Selecciona una categoría</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Moda">Moda</option>
+              <option value="Hogar">Hogar</option>
+              <option value="Deportes">Deportes</option>
+              <option value="Libros">Libros</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+
+          <!-- El botón se deshabilita mientras se procesa la petición para evitar doble envío -->
+          <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fw-medium" [disabled]="enviando">
+            {{ enviando ? 'Publicando...' : 'Publicar' }}
+          </button>
+
+        </form>
+
+        <div class="text-center mt-3">
+          <a routerLink="/catalog" class="text-secondary small text-decoration-none">Cancelar y volver al catálogo</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
