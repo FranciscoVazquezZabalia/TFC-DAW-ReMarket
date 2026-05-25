@@ -1,6 +1,4 @@
 <div class="container py-5">
-
-  <!-- Spinner mientras cargamos el producto -->
   @if (cargando) {
     <div class="text-center py-5">
       <div class="spinner-border" role="status">
@@ -8,24 +6,17 @@
       </div>
     </div>
   }
-
-  <!-- Error si no se pudo cargar el producto -->
   @if (error) {
     <div class="alert alert-danger">No se pudo cargar el producto.</div>
   }
 
-  <!-- Detalle del producto: solo cuando ya tenemos los datos -->
   @if (!cargando && !error && producto) {
     <div class="row g-5">
-      <!-- Columna Imagen -->
       <div class="col-md-7">
         <div class="rounded-4 overflow-hidden shadow-sm">
-          <!-- Placeholder porque los productos del backend no tienen imagen -->
           <img src="https://placehold.co/800x600?text=Sin+imagen" class="img-fluid w-100" alt="Producto">
         </div>
       </div>
-
-      <!-- Columna Información -->
       <div class="col-md-5">
         <nav aria-label="breadcrumb" class="mb-3">
           <ol class="breadcrumb small text-uppercase fw-medium">
@@ -36,8 +27,6 @@
 
         <h1 class="fw-bold mb-2">{{ producto.titulo }}</h1>
         <h2 class="text-primary fw-bold mb-4">{{ producto.precio }}€</h2>
-
-        <!-- Tarjeta del vendedor -->
         <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3">
           <div class="rounded-circle bg-white d-flex align-items-center justify-content-center border" style="width: 50px; height: 50px;">
             <span class="text-secondary small">PFP</span>
@@ -59,8 +48,6 @@
         </div>
 
         <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3">Comprar ahora</button>
-
-        <!-- Botón eliminar: solo visible si el usuario autenticado es el vendedor -->
         @if (esMiProducto()) {
           <button class="btn btn-danger w-100 py-2 rounded-pill fw-bold" (click)="eliminar()">
             Eliminar producto

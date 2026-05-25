@@ -1,14 +1,14 @@
 package com.remarket.backend.repositories;
 
-import com.remarket.backend.entities.User;
+import com.remarket.backend.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Optional<User> findByEmail(String email);
+    Optional<Usuario> findByEmail(String email);
 
     boolean existsByEmail(String email);
 }

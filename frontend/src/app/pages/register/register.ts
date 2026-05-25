@@ -27,7 +27,7 @@ export class Register {
   onRegister() {
     this.errorMessage = '';
 
-    // Validación local: comprobamos que las dos contraseñas coincidan antes de llamar al backend
+    // comprobamos que las dos contraseñas coincidan antes de llamar al backend
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden.';
       return;
@@ -35,11 +35,9 @@ export class Register {
 
     this.authService.register(this.nombre, this.email, this.password).subscribe({
       next: () => {
-        // Registro correcto: redirigimos al inicio (ya quedamos autenticados)
         this.router.navigate(['/']);
       },
       error: () => {
-        // El backend devolvió un error (email ya en uso, datos inválidos, etc.)
         this.errorMessage = 'Error al registrarse. El email puede estar en uso.';
       }
     });

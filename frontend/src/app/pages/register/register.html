@@ -8,12 +8,9 @@
     <h1 class="h3 fw-bold mb-2">Crear cuenta</h1>
     <p class="text-secondary small mb-4">Únete a la plataforma y empieza a vender hoy mismo.</p>
 
-    <!-- Mensaje de error: se muestra si el registro falla o las contraseñas no coinciden -->
     @if (errorMessage) {
       <div class="alert alert-danger small py-2 mb-3">{{ errorMessage }}</div>
     }
-
-    <!-- (ngSubmit) llama a onRegister() al enviar el formulario -->
     <form (ngSubmit)="onRegister()">
       <div class="mb-3">
         <input type="text" class="form-control input-apple w-100 mb-2" placeholder="Nombre completo"
@@ -25,7 +22,6 @@
       <div class="mb-4">
         <input type="password" class="form-control input-apple w-100 mb-2" placeholder="Contraseña"
                [(ngModel)]="password" name="password" required>
-        <!-- confirmPassword solo se valida en el componente, no se envía al backend -->
         <input type="password" class="form-control input-apple w-100" placeholder="Repite la contraseña"
                [(ngModel)]="confirmPassword" name="confirmPassword" required>
       </div>

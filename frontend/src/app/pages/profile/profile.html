@@ -1,5 +1,4 @@
 <div class="container py-5">
-  <!-- Datos del Usuario -->
   <div class="row mb-5 align-items-center bg-light p-4 rounded-4 shadow-sm">
     <div class="col-auto">
       <img [src]="user.avatar" class="rounded-circle border" style="width: 100px; height: 100px; object-fit: cover;" alt="Avatar">
@@ -16,23 +15,23 @@
 
   <h3 class="fw-bold mb-4">Mis anuncios</h3>
 
-  <!-- Productos del Usuario -->
   <div class="row g-4">
-    <div class="col-6 col-md-4 col-lg-3" *ngFor="let p of myProducts">
-      <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-        <img [src]="p.img" class="card-img-top" style="height: 180px; object-fit: cover;">
-        <div class="card-body p-3 text-center d-flex flex-column">
-          <h6 class="fw-bold text-truncate mb-1">{{p.title}}</h6>
-          <p class="fw-bold text-primary mb-3">{{p.price}}€</p>
-          <div class="d-flex gap-2 justify-content-center mt-auto">
-            <button class="btn btn-sm btn-dark rounded-pill flex-grow-1">Editar</button>
-            <button class="btn btn-sm btn-outline-danger rounded-pill flex-grow-1">Borrar</button>
+    @for (p of myProducts; track p.id_producto) {
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+          <img [src]="p.img" class="card-img-top" style="height: 180px; object-fit: cover;">
+          <div class="card-body p-3 text-center d-flex flex-column">
+            <h6 class="fw-bold text-truncate mb-1">{{p.title}}</h6>
+            <p class="fw-bold text-primary mb-3">{{p.price}}€</p>
+            <div class="d-flex gap-2 justify-content-center mt-auto">
+              <button class="btn btn-sm btn-dark rounded-pill flex-grow-1">Editar</button>
+              <button class="btn btn-sm btn-outline-danger rounded-pill flex-grow-1">Borrar</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
 
-    <!-- Tarjeta para subir un producto nuevo -->
     <div class="col-6 col-md-4 col-lg-3">
       <div class="card border-0 rounded-4 h-100 d-flex align-items-center justify-content-center" style="min-height: 250px; background-color: #f8f9fa; border: 2px dashed #dee2e6 !important;">
         <div class="text-center p-3">

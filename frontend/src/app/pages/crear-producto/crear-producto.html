@@ -7,18 +7,16 @@
         <h2 class="fw-bold mb-1">Publicar producto</h2>
         <p class="text-secondary small mb-4">Rellena los detalles del artículo que quieres vender.</p>
 
-        <!-- Mensaje de error si el backend rechaza la petición -->
         @if (errorMsg) {
           <div class="alert alert-danger small py-2 mb-3">{{ errorMsg }}</div>
         }
 
-        <!-- ngSubmit llama a onSubmit() al enviar el formulario -->
         <form (ngSubmit)="onSubmit()">
 
           <div class="mb-3">
             <label class="form-label fw-medium small">Título</label>
             <input type="text" class="form-control rounded-3" placeholder="Ej: iPhone 14 Pro"
-                   [(ngModel)]="producto.titulo" name="titulo" required>
+                   [(ngModel)]="producto.nombre" name="nombre" required>
           </div>
 
           <div class="mb-3">
@@ -31,17 +29,6 @@
             <label class="form-label fw-medium small">Precio (€)</label>
             <input type="number" class="form-control rounded-3" placeholder="0"
                    [(ngModel)]="producto.precio" name="precio" required min="0">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-medium small">Estado</label>
-            <select class="form-select rounded-3" [(ngModel)]="producto.estado" name="estado" required>
-              <option value="" disabled>Selecciona un estado</option>
-              <option value="Nuevo">Nuevo</option>
-              <option value="Como nuevo">Como nuevo</option>
-              <option value="Buen estado">Buen estado</option>
-              <option value="Aceptable">Aceptable</option>
-            </select>
           </div>
 
           <div class="mb-4">
@@ -57,7 +44,6 @@
             </select>
           </div>
 
-          <!-- El botón se deshabilita mientras se procesa la petición para evitar doble envío -->
           <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fw-medium" [disabled]="enviando">
             {{ enviando ? 'Publicando...' : 'Publicar' }}
           </button>

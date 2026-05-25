@@ -14,10 +14,7 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'catalog', component: Catalog },
   { path: 'product/:id', component: ProductDetail },
-
-  // Rutas privadas: el authGuard redirige a /login si el usuario no está autenticado
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'crear-producto', component: CrearProducto, canActivate: [authGuard] },
-
   { path: '**', redirectTo: '' }
 ];

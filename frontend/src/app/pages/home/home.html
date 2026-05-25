@@ -2,12 +2,10 @@
   <div class="container">
     <a class="navbar-brand fw-bold fs-5 tracking-tight text-dark" routerLink="/">REMARKET</a>
     <div class="ms-auto d-flex align-items-center gap-4">
-      <!-- Si el usuario NO está autenticado, mostramos Acceder y Registrarse -->
       @if (!authService.isLoggedIn()) {
         <a routerLink="/login" class="nav-link-auth">Acceder</a>
         <a routerLink="/register" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Registrarse</a>
       } @else {
-        <!-- Si está autenticado, mostramos su nombre, accesos privados y botón de salir -->
         <span class="text-dark small">Hola, {{ authService.getNombre() }}</span>
         <a routerLink="/crear-producto" class="btn btn-dark btn-sm rounded-pill px-4 py-2" style="font-size: 13px;">Publicar</a>
         <a routerLink="/profile" class="nav-link-auth">Mi perfil</a>
@@ -26,7 +24,6 @@
 
   <section class="container px-4 pb-5">
     <div class="row g-4">
-      <!-- @for sustituye a *ngFor. 'track' es obligatorio en Angular 17+ para identificar elementos -->
       @for (section of showcaseSections; track section.title) {
         <div class="col-12">
           <div class="showcase-block shadow-sm" [ngStyle]="{'background-image': 'url(' + section.img + ')'}">

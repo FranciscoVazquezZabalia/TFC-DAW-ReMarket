@@ -12,7 +12,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HomeComponent {
 
-  // Sin 'private' para que el template pueda llamar a authService.isLoggedIn() directamente
   authService = inject(AuthService);
   private router = inject(Router);
 
@@ -23,7 +22,6 @@ export class HomeComponent {
     { title: 'Hogar', subtitle: 'Espacios que inspiran historia.', img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2000&auto=format&fit=crop', textColor: 'text-dark' }
   ];
 
-  // Cierra la sesión del usuario y redirige a la página principal
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);

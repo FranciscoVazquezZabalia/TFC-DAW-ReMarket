@@ -3,7 +3,6 @@
   --apple-dark: #1d1d1f;
 }
 
-/* Head más notable */
 .nav-apple {
   background-color: rgba(251, 251, 253, 0.85);
   backdrop-filter: saturate(180%) blur(20px);
@@ -19,7 +18,6 @@
   font-weight: 500;
 }
 
-/* Titular colosal */
 .hero-title {
   font-size: clamp(80px, 11vw, 160px); 
   font-weight: 700;

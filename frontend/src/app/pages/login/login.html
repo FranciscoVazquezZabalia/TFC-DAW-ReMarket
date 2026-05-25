@@ -7,16 +7,11 @@
 
     <h1 class="h3 fw-bold mb-2">Iniciar sesión</h1>
     <p class="text-secondary small mb-4">Introduce tus credenciales para acceder al catálogo.</p>
-
-    <!-- Mensaje de error: solo se muestra si hay algo en errorMessage -->
     @if (errorMessage) {
       <div class="alert alert-danger small py-2 mb-3">{{ errorMessage }}</div>
     }
-
-    <!-- (ngSubmit) llama a onLogin() cuando el usuario hace submit (botón o Enter) -->
     <form (ngSubmit)="onLogin()">
       <div class="mb-3">
-        <!-- [(ngModel)] enlaza el input con la variable 'email' del componente. name es obligatorio con ngModel -->
         <input type="email" class="form-control input-apple w-100" placeholder="Correo electrónico"
                [(ngModel)]="email" name="email" required>
       </div>
