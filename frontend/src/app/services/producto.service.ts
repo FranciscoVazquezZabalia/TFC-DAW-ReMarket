@@ -3,12 +3,17 @@ import { HttpClient } from '@angular/common/http';
 
 export interface Producto {
   id?: number;
-  nombre: string;
+  titulo: string;
   descripcion: string;
   precio: number;
-  categoria?: string;
-  imagen?: string;
-  vendedorEmail?: string;
+  estado?: string;
+  imagenUrl?: string;
+  fechaPublicacion?: string;
+  estadoVenta?: string;
+  vendedorId?: number;
+  vendedorNombre?: string;
+  categoriaId?: number;
+  categoriaNombre?: string;
 }
 
 @Injectable({

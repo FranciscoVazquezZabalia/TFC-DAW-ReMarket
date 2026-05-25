@@ -35,7 +35,7 @@ export class Register {
 
     this.authService.register(this.nombre, this.email, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/catalog']);
       },
       error: () => {
         this.errorMessage = 'Error al registrarse. El email puede estar en uso.';

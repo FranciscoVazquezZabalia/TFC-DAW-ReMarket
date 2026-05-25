@@ -14,14 +14,14 @@
     <div class="row g-5">
       <div class="col-md-7">
         <div class="rounded-4 overflow-hidden shadow-sm">
-          <img src="https://placehold.co/800x600?text=Sin+imagen" class="img-fluid w-100" alt="Producto">
+          <img [src]="producto.imagenUrl || 'https://placehold.co/800x600?text=Sin+imagen'" class="img-fluid w-100" alt="Producto">
         </div>
       </div>
       <div class="col-md-5">
         <nav aria-label="breadcrumb" class="mb-3">
           <ol class="breadcrumb small text-uppercase fw-medium">
             <li class="breadcrumb-item"><a routerLink="/catalog" class="text-decoration-none text-secondary">Catálogo</a></li>
-            <li class="breadcrumb-item active text-dark" aria-current="page">{{ producto.categoria }}</li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">{{ producto.categoriaNombre }}</li>
           </ol>
         </nav>
 
@@ -33,7 +33,7 @@
           </div>
           <div>
             <p class="mb-0 small text-secondary">Vendedor</p>
-            <p class="mb-0 fw-bold">{{ producto.vendedor?.nombre }}</p>
+            <p class="mb-0 fw-bold">{{ producto.vendedorNombre }}</p>
           </div>
         </div>
 

@@ -24,7 +24,7 @@ export class Login {
 
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/catalog']);
       },
       error: () => {
         this.errorMessage = 'Credenciales incorrectas. Inténtalo de nuevo.';

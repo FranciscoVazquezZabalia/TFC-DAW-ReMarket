@@ -16,11 +16,12 @@ export class CrearProducto {
   private productoService = inject(ProductoService);
   private router = inject(Router);
 
-  producto: Producto = {
-    nombre: '',
+  producto: any = {
+    titulo: '',
     descripcion: '',
     precio: 0,
-    categoria: ''
+    estado: '',
+    categoriaId: null
   };
 
   enviando = false;

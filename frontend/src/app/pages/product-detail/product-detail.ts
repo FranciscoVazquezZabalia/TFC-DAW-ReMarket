@@ -43,7 +43,7 @@ export class ProductDetail implements OnInit {
     });
   }
   esMiProducto(): boolean {
-    return this.authService.getNombre() === this.producto?.vendedor?.nombre;
+    return this.authService.getNombre() === this.producto?.vendedorNombre;
   }
   eliminar() {
     this.productoService.eliminarProducto(this.producto.id).subscribe({
