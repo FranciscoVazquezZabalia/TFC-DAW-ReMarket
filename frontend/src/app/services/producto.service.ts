@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 export interface Producto {
   id?: number;
@@ -16,6 +16,11 @@ export interface Producto {
   categoriaNombre?: string;
 }
 
+export interface Categoria {
+  id: number;
+  nombre: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,14 +28,27 @@ export class ProductoService {
 
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/productos';
+  private categoriasUrl = 'http://localhost:8080/api/categorias';
 
   getProductos() {
     return this.http.get<Producto[]>(this.apiUrl);
   }
 
+  buscarProductos(q?: string, categoriaId?: number) {
+    let params = new HttpParams();
+    if (q && q.trim()) params = params.set('q', q.trim());
+    if (categoriaId != null) params = params.set('categoriaId', categoriaId.toString());
+    return this.http.get<Producto[]>(this.apiUrl, { params });
+  }
+
+  getCategorias() {
+    return this.http.get<Categoria[]>(this.categoriasUrl);
+  }
+
   getProductoById(id: number) {
     return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
+
   crearProducto(producto: Producto) {
     return this.http.post<Producto>(this.apiUrl, producto);
   }

@@ -25,5 +25,7 @@ public class CrearProductoDTO {
     @NotBlank
     private String estado;
 
+    private String imagenUrl;
+
     private Long categoriaId;
 }

@@ -40,6 +40,7 @@ public class ProductoService {
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setEstado(dto.getEstado());
+        producto.setImagenUrl(dto.getImagenUrl()); 
         producto.setVendedor(vendedor);
         producto.setEstadoVenta("disponible");
         producto.setFechaPublicacion(LocalDateTime.now());
@@ -59,6 +60,7 @@ public class ProductoService {
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setEstado(dto.getEstado());
+        producto.setImagenUrl(dto.getImagenUrl()); 
         producto.setCategoria(dto.getCategoriaId() != null ? resolverCategoria(dto.getCategoriaId()) : null);
         return toDTO(productoRepository.save(producto));
     }
