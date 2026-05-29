@@ -26,7 +26,9 @@
                [(ngModel)]="confirmPassword" name="confirmPassword" required>
       </div>
 
-      <button type="submit" class="btn-apple-dark mb-4">Registrarse</button>
+      <button type="submit" class="btn-apple-dark mb-4" [disabled]="enviando">
+        {{ enviando ? 'Creando cuenta...' : 'Registrarse' }}
+      </button>
     </form>
 
     <p class="text-secondary small mb-0">

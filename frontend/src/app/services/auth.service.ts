@@ -8,6 +8,14 @@ interface AuthResponse {
   nombre: string;
 }
 
+export interface UsuarioPerfil {
+  id: number;
+  nombre: string;
+  email: string;
+  avatarUrl?: string;
+  fechaRegistro: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +24,7 @@ export class AuthService {
 
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/auth';
+  private usuariosUrl = 'http://localhost:8080/api/usuarios';
 
   login(email: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
@@ -28,6 +37,10 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { nombre, email, password }).pipe(
       tap(response => this.guardarSesion(response))
     );
+  }
+
+  getMiPerfil() {
+    return this.http.get<UsuarioPerfil>(`${this.usuariosUrl}/me`);
   }
 
   logout(): void {

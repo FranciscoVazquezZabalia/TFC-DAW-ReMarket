@@ -21,7 +21,9 @@
         <a href="#" class="text-primary text-decoration-none small">¿Has olvidado tu contraseña?</a>
       </div>
 
-      <button type="submit" class="btn-apple-dark mb-4">Continuar</button>
+      <button type="submit" class="btn-apple-dark mb-4" [disabled]="enviando">
+        {{ enviando ? 'Entrando...' : 'Continuar' }}
+      </button>
     </form>
 
     <p class="text-secondary small mb-0">

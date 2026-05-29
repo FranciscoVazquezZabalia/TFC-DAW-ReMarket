@@ -53,6 +53,10 @@ export class ProductoService {
     return this.http.post<Producto>(this.apiUrl, producto);
   }
 
+  getMisProductos() {
+    return this.http.get<Producto[]>('http://localhost:8080/api/usuarios/me/productos');
+  }
+
   eliminarProducto(id: number) {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

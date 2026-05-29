@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
+import { timeout } from 'rxjs';
 import { ProductoService, Producto, Categoria } from '../../services/producto.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -22,6 +23,7 @@ export class Catalog implements OnInit {
   productoService = inject(ProductoService);
   authService = inject(AuthService);
   router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   featuredImages = [
     'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1200&q=80',
@@ -36,8 +38,11 @@ export class Catalog implements OnInit {
   filtroCategoriaId: number | null = null;
 
   ngOnInit() {
-    this.productoService.getCategorias().subscribe({
-      next: (cats) => { this.categorias = cats; },
+    this.productoService.getCategorias().pipe(timeout(10000)).subscribe({
+      next: (cats) => {
+        this.categorias = cats;
+        this.cdr.detectChanges();
+      },
       error: () => {}
     });
     this.cargarProductos();
@@ -46,16 +51,20 @@ export class Catalog implements OnInit {
   cargarProductos() {
     this.cargando = true;
     this.error = false;
-    this.productoService.buscarProductos(this.filtroQ, this.filtroCategoriaId ?? undefined).subscribe({
-      next: (productos) => {
-        this.grupos = this.agruparPorCategoria(productos);
-        this.cargando = false;
-      },
-      error: () => {
-        this.error = true;
-        this.cargando = false;
-      }
-    });
+    this.productoService.buscarProductos(this.filtroQ, this.filtroCategoriaId ?? undefined)
+      .pipe(timeout(10000))
+      .subscribe({
+        next: (productos) => {
+          this.grupos = this.agruparPorCategoria(productos);
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.error = true;
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   buscar() {

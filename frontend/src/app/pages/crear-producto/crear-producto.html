@@ -31,16 +31,30 @@
                    [(ngModel)]="producto.precio" name="precio" required min="0">
           </div>
 
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Estado del artículo</label>
+            <select class="form-select rounded-3" [(ngModel)]="producto.estado" name="estado" required>
+              <option value="" disabled>Selecciona el estado</option>
+              <option value="Nuevo">Nuevo</option>
+              <option value="Como nuevo">Como nuevo</option>
+              <option value="Buen estado">Buen estado</option>
+              <option value="Usado">Usado</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">URL de imagen</label>
+            <input type="url" class="form-control rounded-3" placeholder="https://ejemplo.com/imagen.jpg"
+                   [(ngModel)]="producto.imagenUrl" name="imagenUrl">
+          </div>
+
           <div class="mb-4">
             <label class="form-label fw-medium small">Categoría</label>
-            <select class="form-select rounded-3" [(ngModel)]="producto.categoria" name="categoria" required>
-              <option value="" disabled>Selecciona una categoría</option>
-              <option value="Tecnología">Tecnología</option>
-              <option value="Moda">Moda</option>
-              <option value="Hogar">Hogar</option>
-              <option value="Deportes">Deportes</option>
-              <option value="Libros">Libros</option>
-              <option value="Otros">Otros</option>
+            <select class="form-select rounded-3" [(ngModel)]="producto.categoriaId" name="categoriaId">
+              <option [ngValue]="null">Sin categoría</option>
+              @for (cat of categorias; track cat.id) {
+                <option [ngValue]="cat.id">{{ cat.nombre }}</option>
+              }
             </select>
           </div>
 
