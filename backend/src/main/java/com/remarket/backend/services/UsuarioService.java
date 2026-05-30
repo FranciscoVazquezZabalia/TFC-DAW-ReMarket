@@ -38,7 +38,8 @@ public class UsuarioService {
                 u.getNombre(),
                 u.getEmail(),
                 u.getAvatarUrl(),
-                u.getFechaRegistro()
+                u.getFechaRegistro(),
+                u.getRole()
         );
     }
 }

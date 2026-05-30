@@ -6,7 +6,9 @@ import { Catalog } from './pages/catalog/catalog';
 import { ProductDetail } from './pages/product-detail/product-detail';
 import { Profile } from './pages/profile/profile';
 import { CrearProducto } from './pages/crear-producto/crear-producto';
+import { AdminPanel } from './pages/admin-panel/admin-panel';
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,5 +18,6 @@ export const routes: Routes = [
   { path: 'product/:id', component: ProductDetail },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'crear-producto', component: CrearProducto, canActivate: [authGuard] },
+  { path: 'admin', component: AdminPanel, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' }
 ];

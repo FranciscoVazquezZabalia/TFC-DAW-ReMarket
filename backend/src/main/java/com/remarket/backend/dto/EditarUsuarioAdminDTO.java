@@ -1,18 +1,20 @@
 package com.remarket.backend.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioDTO {
-    private Long id;
+public class EditarUsuarioAdminDTO {
+
+    @NotBlank
     private String nombre;
+
+    @NotBlank
+    @Email
     private String email;
-    private String avatarUrl;
-    private LocalDateTime fechaRegistro;
-    private String role;
 }

@@ -6,6 +6,7 @@ interface AuthResponse {
   token: string;
   email: string;
   nombre: string;
+  role: string;
 }
 
 export interface UsuarioPerfil {
@@ -56,6 +57,11 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     localStorage.removeItem('nombre');
+    localStorage.removeItem('role');
+  }
+
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'ROLE_ADMIN';
   }
 
   isLoggedIn(): boolean {
@@ -74,5 +80,6 @@ export class AuthService {
     localStorage.setItem('token', response.token);
     localStorage.setItem('email', response.email);
     localStorage.setItem('nombre', response.nombre);
+    localStorage.setItem('role', response.role);
   }
 }

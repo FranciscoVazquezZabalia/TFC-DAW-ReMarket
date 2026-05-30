@@ -35,7 +35,7 @@ public class AuthService {
         usuarioRepository.save(usuario);
 
         String token = jwtService.generarToken(usuario.getEmail());
-        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNombre());
+        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNombre(), usuario.getRole());
     }
 
     public AuthResponseDTO login(LoginRequestDTO dto) {
@@ -50,6 +50,6 @@ public class AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
         String token = jwtService.generarToken(usuario.getEmail());
-        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNombre());
+        return new AuthResponseDTO(token, usuario.getEmail(), usuario.getNombre(), usuario.getRole());
     }
 }

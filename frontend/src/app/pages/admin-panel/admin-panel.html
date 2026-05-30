@@ -1,0 +1,186 @@
+<div class="container py-5">
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">Panel de administrador</h2>
+      <p class="text-secondary small mb-0">Gestión de usuarios y productos de la plataforma.</p>
+    </div>
+    <a routerLink="/catalog" class="btn btn-outline-dark rounded-pill px-4">Volver al catálogo</a>
+  </div>
+
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <button class="nav-link fw-medium" [class.active]="pestana === 'usuarios'" (click)="cambiarPestana('usuarios')">
+        Usuarios
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link fw-medium" [class.active]="pestana === 'productos'" (click)="cambiarPestana('productos')">
+        Productos
+      </button>
+    </li>
+  </ul>
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status"></div>
+    </div>
+  }
+
+  @if (!cargando) {
+
+    @if (pestana === 'usuarios') {
+      <div class="table-responsive rounded-4 shadow-sm">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of usuarios; track u.id) {
+              <tr>
+                <td class="text-secondary small">{{ u.id }}</td>
+                <td class="fw-medium">{{ u.nombre }}</td>
+                <td class="text-secondary small">{{ u.email }}</td>
+                <td>
+                  <span class="badge"
+                        [class.bg-danger]="u.role === 'ROLE_ADMIN'"
+                        [class.bg-secondary]="u.role !== 'ROLE_ADMIN'">
+                    {{ u.role }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3 me-2" (click)="abrirEditarUsuario(u)">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                            (click)="darDeBaja(u.id)">
+                      Dar de baja
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    @if (pestana === 'productos') {
+      <div class="table-responsive rounded-4 shadow-sm">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Precio</th>
+              <th>Vendedor</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of productos; track p.id) {
+              <tr>
+                <td class="text-secondary small">{{ p.id }}</td>
+                <td class="fw-medium">{{ p.titulo }}</td>
+                <td>{{ p.precio }}€</td>
+                <td class="text-secondary small">{{ p.vendedorNombre }}</td>
+                <td>
+                  <span class="badge"
+                        [class.bg-success]="p.estadoVenta === 'disponible'"
+                        [class.bg-danger]="p.estadoVenta === 'vendido'"
+                        [class.bg-secondary]="p.estadoVenta !== 'disponible' && p.estadoVenta !== 'vendido'">
+                    {{ p.estadoVenta }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button class="btn btn-sm btn-outline-dark rounded-pill px-3"
+                            (click)="abrirEditarProducto(p)">
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                            (click)="eliminarProducto(p.id)">
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+  }
+
+</div>
+
+@if (editandoUsuario) {
+  <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+       style="background: rgba(0,0,0,0.8); z-index: 1050;">
+    <div class="w-100 mx-3" style="max-width: 440px;">
+      <div class="rounded-4 border-0 shadow-lg p-4" style="background: #ffffff;">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold mb-0">Editar usuario #{{ editandoUsuario.id }}</h5>
+          <button type="button" class="btn-close" (click)="cerrarEditarUsuario()"></button>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-medium small">Nombre</label>
+          <input type="text" class="form-control rounded-3"
+                 [(ngModel)]="editFormUsuario.nombre" name="editNombreU">
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-medium small">Email</label>
+          <input type="email" class="form-control rounded-3"
+                 [(ngModel)]="editFormUsuario.email" name="editEmailU">
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-outline-dark rounded-pill px-4" (click)="cerrarEditarUsuario()">Cancelar</button>
+          <button class="btn btn-dark rounded-pill px-4" (click)="guardarUsuario()">Guardar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
+
+@if (editandoProducto) {
+  <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+       style="background: rgba(0,0,0,0.8); z-index: 1050;">
+    <div class="w-100 mx-3" style="max-width: 440px;">
+      <div class="rounded-4 border-0 shadow-lg p-4" style="background: #ffffff;">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold mb-0">Editar producto #{{ editandoProducto.id }}</h5>
+          <button type="button" class="btn-close" (click)="cerrarEditarProducto()"></button>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-medium small">Título</label>
+          <input type="text" class="form-control rounded-3"
+                 [(ngModel)]="editFormProducto.titulo" name="editTituloP">
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-medium small">Precio (€)</label>
+          <input type="number" class="form-control rounded-3" min="0"
+                 [(ngModel)]="editFormProducto.precio" name="editPrecioP">
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-outline-dark rounded-pill px-4" (click)="cerrarEditarProducto()">Cancelar</button>
+          <button class="btn btn-dark rounded-pill px-4" (click)="guardarProducto()">Guardar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

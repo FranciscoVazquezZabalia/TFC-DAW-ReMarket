@@ -11,4 +11,5 @@ public class AuthResponseDTO {
     private String token;
     private String email;
     private String nombre;
+    private String role;
 }

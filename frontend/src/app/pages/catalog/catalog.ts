@@ -5,6 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { timeout } from 'rxjs';
 import { ProductoService, Producto, Categoria } from '../../services/producto.service';
 import { AuthService } from '../../services/auth.service';
+import { AdminService } from '../../services/admin.service';
 
 interface GrupoCategoria {
   nombre: string;
@@ -22,6 +23,7 @@ export class Catalog implements OnInit {
 
   productoService = inject(ProductoService);
   authService = inject(AuthService);
+  adminService = inject(AdminService);
   router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
@@ -84,6 +86,13 @@ export class Catalog implements OnInit {
       mapa.get(clave)!.push(p);
     }
     return Array.from(mapa.entries()).map(([nombre, prods]) => ({ nombre, productos: prods }));
+  }
+
+  eliminarProductoAdmin(id: number) {
+    this.adminService.eliminarProducto(id).subscribe({
+      next: () => this.cargarProductos(),
+      error: () => {}
+    });
   }
 
   logout() {
