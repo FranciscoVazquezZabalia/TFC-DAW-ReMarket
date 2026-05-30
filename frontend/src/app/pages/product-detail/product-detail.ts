@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ProductoService } from '../../services/producto.service';
@@ -16,11 +16,12 @@ export class ProductDetail implements OnInit {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   producto: any = null;
-
   cargando = true;
   error = false;
+  esFavorito = false;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -34,17 +35,36 @@ export class ProductDetail implements OnInit {
     this.productoService.getProductoById(Number(id)).subscribe({
       next: (data) => {
         this.producto = data;
+        const favs: number[] = JSON.parse(localStorage.getItem('favoritos') ?? '[]');
+        this.esFavorito = favs.includes(data.id!);
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = true;
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
+
+  toggleFavorito() {
+    const favs: number[] = JSON.parse(localStorage.getItem('favoritos') ?? '[]');
+    const idx = favs.indexOf(this.producto.id);
+    if (idx === -1) {
+      favs.push(this.producto.id);
+    } else {
+      favs.splice(idx, 1);
+    }
+    localStorage.setItem('favoritos', JSON.stringify(favs));
+    this.esFavorito = !this.esFavorito;
+    this.cdr.detectChanges();
+  }
+
   esMiProducto(): boolean {
     return this.authService.getNombre() === this.producto?.vendedorNombre;
   }
+
   eliminar() {
     this.productoService.eliminarProducto(this.producto.id).subscribe({
       next: () => {
