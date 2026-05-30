@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ProductoService } from '../../services/producto.service';
 import { AuthService } from '../../services/auth.service';
@@ -7,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
 })
@@ -22,6 +23,13 @@ export class ProductDetail implements OnInit {
   cargando = true;
   error = false;
   esFavorito = false;
+
+  mostrarModal = false;
+  procesando = false;
+  compraRealizada = false;
+  errorPago = '';
+
+  tarjeta = { nombre: '', numero: '', caducidad: '', cvv: '' };
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -46,6 +54,42 @@ export class ProductDetail implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  abrirModal() {
+    this.tarjeta = { nombre: '', numero: '', caducidad: '', cvv: '' };
+    this.procesando = false;
+    this.compraRealizada = false;
+    this.errorPago = '';
+    this.mostrarModal = true;
+    this.cdr.detectChanges();
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+    this.cdr.detectChanges();
+  }
+
+  pagar() {
+    this.procesando = true;
+    this.errorPago = '';
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      this.productoService.crearTransaccion(this.producto.id).subscribe({
+        next: () => {
+          this.procesando = false;
+          this.compraRealizada = true;
+          this.producto.estadoVenta = 'vendido';
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.procesando = false;
+          this.errorPago = 'Error al procesar el pago. Inténtalo de nuevo.';
+          this.cdr.detectChanges();
+        }
+      });
+    }, 2000);
   }
 
   toggleFavorito() {

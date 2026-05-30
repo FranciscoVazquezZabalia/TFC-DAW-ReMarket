@@ -55,7 +55,16 @@
           <p class="small text-secondary">Publicado el: <span class="text-dark fw-medium">{{ producto.fechaPublicacion | date:'dd/MM/yyyy' }}</span></p>
         </div>
 
-        <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3">Comprar ahora</button>
+        @if (esMiProducto()) {
+          <div class="alert alert-info text-center rounded-pill mb-3 fw-medium">Este es tu producto</div>
+        } @else if (producto.estadoVenta !== 'vendido') {
+          <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3" (click)="abrirModal()">
+            Comprar ahora
+          </button>
+        } @else {
+          <div class="alert alert-secondary text-center rounded-pill mb-3 fw-medium">Producto vendido</div>
+        }
+
         @if (esMiProducto()) {
           <button class="btn btn-danger w-100 py-2 rounded-pill fw-bold" (click)="eliminar()">
             Eliminar producto
@@ -65,3 +74,80 @@
     </div>
   }
 </div>
+
+@if (mostrarModal) {
+  <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+       style="background: rgba(0,0,0,0.8); z-index: 1050;">
+    <div class="w-100 mx-3" style="max-width: 480px;">
+      <div class="rounded-4 border-0 shadow-lg p-4" style="background: #ffffff;">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="fw-bold mb-0">Confirmar compra</h5>
+          @if (!procesando) {
+            <button type="button" class="btn-close" (click)="cerrarModal()"></button>
+          }
+        </div>
+
+        @if (!procesando && !compraRealizada) {
+          <div class="d-flex gap-3 mb-4 p-3 bg-light rounded-3 align-items-center">
+            <img [src]="producto.imagenUrl || 'https://placehold.co/80x80?text=?'"
+                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 10px;" alt="">
+            <div>
+              <p class="fw-bold mb-1 text-truncate" style="max-width: 280px;">{{ producto.titulo }}</p>
+              <p class="text-primary fw-bold mb-0 fs-5">{{ producto.precio }}€</p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control rounded-3" placeholder="Nombre en la tarjeta"
+                   [(ngModel)]="tarjeta.nombre" name="nombreTarjeta">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control rounded-3" placeholder="Número de tarjeta (16 dígitos)"
+                   maxlength="16" [(ngModel)]="tarjeta.numero" name="numeroTarjeta">
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <input type="text" class="form-control rounded-3" placeholder="MM/AA"
+                     maxlength="5" [(ngModel)]="tarjeta.caducidad" name="caducidad">
+            </div>
+            <div class="col-6">
+              <input type="text" class="form-control rounded-3" placeholder="CVV"
+                     maxlength="3" [(ngModel)]="tarjeta.cvv" name="cvv">
+            </div>
+          </div>
+
+          @if (errorPago) {
+            <div class="alert alert-danger small py-2">{{ errorPago }}</div>
+          }
+        }
+
+        @if (procesando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-dark mb-3" role="status"></div>
+            <p class="fw-medium mb-0">Procesando pago...</p>
+          </div>
+        }
+
+        @if (compraRealizada) {
+          <div class="text-center py-4">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold mt-3 mb-1">¡Compra realizada!</h5>
+            <p class="text-muted small mb-0">Recibirás los detalles pronto.</p>
+          </div>
+        }
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          @if (!procesando && !compraRealizada) {
+            <button class="btn btn-outline-dark rounded-pill px-4" (click)="cerrarModal()">Cancelar</button>
+            <button class="btn btn-dark rounded-pill px-4" (click)="pagar()">Pagar</button>
+          }
+          @if (compraRealizada) {
+            <button class="btn btn-dark rounded-pill px-4 w-100" (click)="cerrarModal()">Cerrar</button>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

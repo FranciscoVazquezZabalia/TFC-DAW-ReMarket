@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,7 +10,7 @@ import { AuthService, UsuarioPerfil } from '../../services/auth.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -25,6 +26,11 @@ export class Profile implements OnInit {
   cargando = true;
   cargandoFavoritos = true;
   pestana: 'anuncios' | 'favoritos' = 'anuncios';
+
+  mostrarModalEditar = false;
+  guardando = false;
+  errorEditar = '';
+  editForm = { nombre: '', email: '', password: '', repetirPassword: '' };
 
   ngOnInit() {
     this.authService.getMiPerfil().subscribe({
@@ -50,6 +56,44 @@ export class Profile implements OnInit {
     });
 
     this.cargarFavoritos();
+  }
+
+  abrirModalEditar() {
+    this.editForm = { nombre: this.usuario?.nombre ?? '', email: this.usuario?.email ?? '', password: '', repetirPassword: '' };
+    this.errorEditar = '';
+    this.guardando = false;
+    this.mostrarModalEditar = true;
+    this.cdr.detectChanges();
+  }
+
+  cerrarModalEditar() {
+    this.mostrarModalEditar = false;
+    this.cdr.detectChanges();
+  }
+
+  guardarPerfil() {
+    if (this.editForm.password && this.editForm.password !== this.editForm.repetirPassword) {
+      this.errorEditar = 'Las contraseñas no coinciden.';
+      this.cdr.detectChanges();
+      return;
+    }
+    this.guardando = true;
+    this.errorEditar = '';
+    this.cdr.detectChanges();
+
+    this.authService.actualizarPerfil(this.editForm.nombre, this.editForm.email, this.editForm.password || undefined).subscribe({
+      next: (u) => {
+        this.usuario = u;
+        this.guardando = false;
+        this.mostrarModalEditar = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.guardando = false;
+        this.errorEditar = 'No se pudo guardar. El email puede estar en uso.';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   cargarFavoritos() {

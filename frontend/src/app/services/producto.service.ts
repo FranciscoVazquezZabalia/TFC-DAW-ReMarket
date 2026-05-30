@@ -57,6 +57,10 @@ export class ProductoService {
     return this.http.get<Producto[]>('http://localhost:8080/api/usuarios/me/productos');
   }
 
+  crearTransaccion(productoId: number) {
+    return this.http.post<any>('http://localhost:8080/api/transacciones', { productoId });
+  }
+
   eliminarProducto(id: number) {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

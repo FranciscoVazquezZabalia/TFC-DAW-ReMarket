@@ -19,9 +19,61 @@
       </span>
     </div>
     <div class="col-md-auto mt-3 mt-md-0">
-      <button class="btn btn-outline-dark rounded-pill px-4">Editar perfil</button>
+      <button class="btn btn-outline-dark rounded-pill px-4" (click)="abrirModalEditar()">Editar perfil</button>
     </div>
   </div>
+
+  @if (mostrarModalEditar) {
+    <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+         style="background: rgba(0,0,0,0.8); z-index: 1050;">
+      <div class="w-100 mx-3" style="max-width: 500px; min-width: 500px;">
+        <div class="rounded-4 border-0 shadow-lg p-4" style="background: #ffffff;">
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">Editar perfil</h5>
+            @if (!guardando) {
+              <button type="button" class="btn-close" (click)="cerrarModalEditar()"></button>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Nombre</label>
+            <input type="text" class="form-control rounded-3"
+                   [(ngModel)]="editForm.nombre" name="editNombre">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Email</label>
+            <input type="email" class="form-control rounded-3"
+                   [(ngModel)]="editForm.email" name="editEmail">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Nueva contraseña <span class="text-secondary fw-normal">(dejar vacío para no cambiar)</span></label>
+            <input type="password" class="form-control rounded-3"
+                   [(ngModel)]="editForm.password" name="editPassword">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-medium small">Repetir contraseña</label>
+            <input type="password" class="form-control rounded-3"
+                   [(ngModel)]="editForm.repetirPassword" name="editRepetirPassword">
+          </div>
+
+          @if (errorEditar) {
+            <div class="alert alert-danger small py-2 mb-3">{{ errorEditar }}</div>
+          }
+
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button class="btn btn-outline-dark rounded-pill px-4" (click)="cerrarModalEditar()"
+                    [disabled]="guardando">Cancelar</button>
+            <button class="btn btn-dark rounded-pill px-4" (click)="guardarPerfil()"
+                    [disabled]="guardando">
+              {{ guardando ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  }
 
   <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
@@ -52,6 +104,11 @@
               <img [src]="p.imagenUrl || 'https://placehold.co/400x300?text=Sin+imagen'"
                    class="card-img-top" style="height: 180px; object-fit: cover;">
               <div class="card-body p-3 text-center d-flex flex-column">
+                <span class="badge mb-2 align-self-center"
+                      [class.bg-danger]="p.estadoVenta === 'vendido'"
+                      [class.bg-success]="p.estadoVenta !== 'vendido'">
+                  {{ p.estadoVenta === 'vendido' ? 'Vendido' : 'Disponible' }}
+                </span>
                 <h6 class="fw-bold text-truncate mb-1">{{ p.titulo }}</h6>
                 <p class="fw-bold mb-3">{{ p.precio }}€</p>
                 <div class="d-flex gap-2 justify-content-center mt-auto">

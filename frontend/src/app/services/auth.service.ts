@@ -43,6 +43,15 @@ export class AuthService {
     return this.http.get<UsuarioPerfil>(`${this.usuariosUrl}/me`);
   }
 
+  actualizarPerfil(nombre: string, email: string, password?: string) {
+    return this.http.put<UsuarioPerfil>(`${this.usuariosUrl}/me`, { nombre, email, password }).pipe(
+      tap(u => {
+        localStorage.setItem('nombre', u.nombre);
+        localStorage.setItem('email', u.email);
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('email');

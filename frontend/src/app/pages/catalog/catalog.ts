@@ -55,7 +55,7 @@ export class Catalog implements OnInit {
       .pipe(timeout(10000))
       .subscribe({
         next: (productos) => {
-          this.grupos = this.agruparPorCategoria(productos);
+          this.grupos = this.agruparPorCategoria(productos.filter(p => p.estadoVenta !== 'vendido'));
           this.cargando = false;
           this.cdr.detectChanges();
         },
